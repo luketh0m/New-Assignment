@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20170825081708) do
+ActiveRecord::Schema.define(version: 20171207201432) do
 
   create_table "broadcasts", force: :cascade do |t|
     t.text "content"
@@ -31,6 +31,17 @@ ActiveRecord::Schema.define(version: 20170825081708) do
     t.string "name"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
+  end
+
+  create_table "forums", force: :cascade do |t|
+    t.string "title"
+    t.string "author"
+    t.string "subject"
+    t.string "comment"
+    t.integer "user_id"
+    t.integer "reply_id"
+    t.index ["reply_id"], name: "index_forums_on_reply_id"
+    t.index ["user_id"], name: "index_forums_on_user_id"
   end
 
   create_table "images", force: :cascade do |t|

@@ -1,0 +1,1 @@
+json.array! @forums, partial: 'api/forums/forum', as: :forum

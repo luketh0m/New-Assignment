@@ -1,0 +1,39 @@
+<%= form_for(@forum, local: true) do |f| %>
+    <% # If any errors, display %>
+    <% if @forum.errors.any? %>
+        <div id="error_explanation">
+          <h2><%= pluralize(@forum.errors.count, "error") %> prohibited this post from being saved:</h2>
+        </div>
+        <ul>
+          <% @forum.errors.full_messages.each do |m| %>
+              <li><%= m %></li>
+          <% end %>
+
+    <% end %>
+    <p>
+      <%= f.label :title %>
+      <%= f.text_field :title, id: :forum_title %>
+    </p>
+    <br>
+    <p>
+      <%= f.label :'Would you like to post this Anonymously?' %>
+      <%= f.check_box :author, {}, 'anonymous', current_user.login %>
+      <br>
+    </p>
+    <br>
+    <%= f.label :subject %>
+    <%= f.text_area :subject, id: :forum_subject %>
+    </p>
+    <br>
+    <div class="actions">
+      <%= f.submit %>
+
+
+    </div>
+    </ul>
+
+
+<% end %>
+
+<br>
+<%= link_to "Back To forum", forums_path %>

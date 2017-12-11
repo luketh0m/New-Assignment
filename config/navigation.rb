@@ -91,6 +91,10 @@ SimpleNavigation::Configuration.run do |navigation|
     primary.item :users, 'Users', users_path,
                  highlights_on: /(^\/users$)|(\/users\/search)|(\/users\?)/,
                  if: Proc.new {is_admin?}
+    primary.item :forum, 'Forums', forums_path,
+                 highlights_on: /(^\/forum$)|(\/forums\/search)|(\/forums\?)/,
+                 if: Proc.new {is_admin?}
+
     primary.item :broadcasts, 'Broadcasts', broadcasts_path,
                  highlights_on: /\/broadcasts/,
                  if: Proc.new {is_admin?}

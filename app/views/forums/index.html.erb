@@ -1,0 +1,39 @@
+<% # Index page of forums section %>
+<h1> All forums</h1>
+
+<table>
+  <tr>
+
+    <th>Title</th>
+    <th>Author</th>
+    <th>Unread posts</th>
+    <th>Total number of posts</th>
+    <tbody>
+    <% @forums.each do |forum| %>
+
+
+        <tr colspan="4">
+          <td><%= link_to forum.title, forum %></td>
+          <td><%= forum.author %></td>
+          <td><%= Forum.count('comment') %></td>
+          <td> <%= Forum.count('author') %> </td>
+
+
+    <% end %>
+
+
+    </tbody>
+</table>
+</tr>
+
+</table>
+<% # Displaying Pagination as done in part one %>
+<br>
+<div class="digg_pagination">
+  <div>
+    <%= page_entries_info @forums %>
+  </div>
+  <%= will_paginate @forums, container: false %>
+</div>
+<br>
+<%= link_to 'Create New Forum', new_forum_path %>

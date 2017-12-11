@@ -1,0 +1,30 @@
+<% # A simple page allowing the user to view the current forum %>
+<h1> Showing selected Forum</h1>
+<br>
+
+<p>
+  <strong> Title:</strong> <%= @forum.title %>
+</p>
+
+<p>
+  <strong> Author:</strong> <%= @forum.author %>
+</p>
+
+<p>
+  <strong> Subject</strong> <%= @forum.subject %>
+</p>
+
+<% if is_admin? || @forum.author == current_user.login %> <% # If the user is admin or the author of current forum, display options of edit and delete %>
+    <td><%= link_to 'Edit', edit_forum_path(@forum) %></td>
+    <td><%= link_to 'Destroy', @forum, method: :delete, data: {confirm: 'Are you sure?'} %></td>
+<% end %>
+
+
+
+<%= link_to 'Back', forums_path %>
+
+<% if @forum.replies %>
+    <%= render 'comment', forum: @forum %>
+<% end %>
+<br>
+

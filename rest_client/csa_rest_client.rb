@@ -33,6 +33,15 @@ class CSARestClient
         when '5'
           puts 'Deleting user:'
           delete_user
+        when '6'
+          puts 'Display Forums:'
+          display_forums
+        when '7'
+          puts 'Displaying Forum:'
+          display_forum
+        when '8'
+          puts 'Creating Forum:'
+          create_forum
         when 'Q'
           break
         else
@@ -50,6 +59,9 @@ class CSARestClient
     puts '3. Create new user'
     puts '4. Update user by ID'
     puts '5. Delete user by ID'
+    puts '6. Display Forums'
+    puts '7. Display Forums by ID'
+    puts '8. Create Forum'
     puts 'Q. Quit'
   end
 
@@ -88,6 +100,40 @@ class CSARestClient
     end
   end
 
+  def display_forum
+    begin
+      print "Enter the forum ID: "
+      id = STDIN.gets.chomp
+      response = RestClient.get "#{@@DOMAIN}/api/forums/#{id}.json", authorization_hash
+
+      js = JSON response.body
+      js.each do |k, v|
+        puts "#{k}: #{v}"
+      end
+    rescue => e
+      puts STDERR, "Error accessing REST service. Error: #{e}"
+    end
+  end
+  def display_forums
+    begin
+      response = RestClient.get "#{@@DOMAIN}/api/forums.json?all", authorization_hash
+
+      puts "Response code: #{response.code}"
+      puts "Response cookies:\n #{response.cookies}\n\n"
+      puts "Response headers:\n #{response.headers}\n\n"
+      puts "Response content:\n #{response.to_str}"
+
+      js = JSON response.body
+      js.each do |item_hash|
+        item_hash.each do |k, v|
+          puts "#{k}: #{v}"
+        end
+      end
+    rescue => e
+      puts STDERR, "Error accessing REST service. Error: #{e}"
+    end
+  end
+
   def create_user
     begin
       print "Surname: "
@@ -120,7 +166,7 @@ class CSARestClient
       # request but we would then have to have an initial call (a kind of login perhaps).
       # This will automatically send as a multi-part request because we are adding a
       # File object.
-      response = RestClient.post "#{@@DOMAIN}/api/users.json",
+      response = RestClient.forum "#{@@DOMAIN}/api/users.json",
 
                                  {
                                      user: {
@@ -147,6 +193,35 @@ class CSARestClient
       puts STDERR, "Error accessing REST service. Error: #{e}"
     end
   end
+
+
+
+  def create_forum
+    begin
+      print "Ttile: "
+      title = STDIN.gets.chomp
+      print "Author: "
+      author = STDIN.gets.chomp
+      print "Subject: "
+      subject = STDIN.gets.chomp
+
+      response = RestClient.forum "#{@@DOMAIN}/api/forums.json",
+                                 {
+                                     forum: {title: title,
+                                            author: author,
+                                            subject: subject}
+                                 }, authorization_hash
+
+      if (response.code == 201)
+        puts "Created successfully"
+      end
+      puts "URL for new resource: #{response.headers[:location]}"
+    rescue => e
+      puts STDERR, "Error accessing REST service. Error: #{e}"
+    end
+  end
+
+
 
   def update_user
     begin

@@ -29,3 +29,4 @@ User.transaction do
   Feed.create!(name: 'atom')
   Feed.create!(name: 'notification')
 end
+
